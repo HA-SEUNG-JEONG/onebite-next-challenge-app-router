@@ -12,7 +12,8 @@ export default function MovieItem(movieData: MovieData) {
                 <Image
                     src={movieData.posterImgUrl}
                     alt={movieData.title}
-                    fill
+                    width={999}
+                    height={999}
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 group-hover:bg-opacity-40 transition-opacity duration-300" />
