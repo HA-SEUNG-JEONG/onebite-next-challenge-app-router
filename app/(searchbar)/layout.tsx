@@ -1,4 +1,4 @@
-import SearchBar from "./components/SearchBar";
+import Searchbar from "./components/SearchBar";
 
 interface SearchLayoutProps {
     children: React.ReactNode;
@@ -6,10 +6,8 @@ interface SearchLayoutProps {
 
 export default function SearchLayout({ children }: SearchLayoutProps) {
     return (
-        <div className="container mx-auto px-4">
-            <header className="py-4 border-b mb-4">
-                <SearchBar />
-            </header>
+        <div>
+            <Searchbar />
             <main>{children}</main>
         </div>
     );

@@ -1,32 +1,31 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 export default function Searchbar() {
-    const [searchTerm, setSearchTerm] = useState("");
     const router = useRouter();
-    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const q = searchParams.get("q");
 
     useEffect(() => {
-        if (pathname === "/") {
-            setSearchTerm("");
-        }
-    }, [pathname]);
+        setSearchTerm(q || "");
+    }, [q]);
 
     const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
-    const onClickSearch = () => {
-        if (searchTerm) {
-            router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
-        }
+    const onSubmit = () => {
+        if (!searchTerm || q === searchTerm) return;
+        router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
     };
 
     const onKeyDownEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            onClickSearch();
+            onSubmit();
         }
     };
 
@@ -35,13 +34,13 @@ export default function Searchbar() {
             <input
                 value={searchTerm}
                 onChange={onChangeSearch}
+                className="border-2 border-gray-300 rounded-md py-2 px-4 flex-grow mr-2 mb-2"
                 onKeyDown={onKeyDownEnter}
-                className="border-2 border-gray-300 rounded-md py-2 px-4 flex-grow mr-2"
-                placeholder="검색어를 입력하세요"
+                placeholder="검색어를 입력하세요 ..."
             />
             <button
-                onClick={onClickSearch}
                 className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                onClick={onSubmit}
             >
                 검색
             </button>
