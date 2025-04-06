@@ -35,7 +35,7 @@ export default async function MoviePage({
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-end">
-                    <div className="relative w-48 h-72 md:w-64 md:h-96 flex-shrink-0 -mb-20 md:mb-0">
+                    <div className="relative w-48 h-72 md:w-64 md:h-96 flex-shrink-0 md:mb-0">
                         <Image
                             src={posterImgUrl}
                             alt={title}
