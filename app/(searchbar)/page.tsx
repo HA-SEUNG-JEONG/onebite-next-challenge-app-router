@@ -1,5 +1,5 @@
 import { MovieData } from "@/types";
-import MovieItem from "./components/MovieItem";
+import MovieItem from "@/app/(searchbar)/components/MovieItem";
 
 async function getAllMovies() {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/movie`, {
