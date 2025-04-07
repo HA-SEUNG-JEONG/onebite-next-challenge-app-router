@@ -1,13 +1,19 @@
-import movies from "@/dummy.json";
 import Image from "next/image";
-
+import { MovieData } from "@/types";
 export default async function MoviePage({
     params
 }: {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }) {
-    const movie = movies.find((movie) => movie.id === Number(params.id));
-    if (!movie) return <div>영화를 찾을 수 없습니다.</div>;
+    const { id } = await params;
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/movie/${id}`,
+        {
+            cache: "force-cache"
+        }
+    );
+    if (!response.ok) return <div>영화를 불러오는데 실패했습니다.</div>;
+    const movieDetail: MovieData = await response.json();
 
     const {
         title,
@@ -18,7 +24,7 @@ export default async function MoviePage({
         posterImgUrl,
         releaseDate,
         genres
-    } = movie;
+    } = movieDetail;
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -35,7 +41,7 @@ export default async function MoviePage({
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-end">
-                    <div className="relative w-48 h-72 md:w-64 md:h-96 flex-shrink-0 md:mb-0">
+                    <div className="relative w-48 h-72 md:w-64 md:h-96 flex-shrink-0  md:mb-0">
                         <Image
                             src={posterImgUrl}
                             alt={title}

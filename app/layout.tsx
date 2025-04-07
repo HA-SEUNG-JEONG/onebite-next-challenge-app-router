@@ -26,8 +26,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <div className=" min-h-screen bg-black text-white p-4">
-                    <header className="text-[rgb(229,9,20)] text-2xl font-bold">
+                <div className="min-h-screen bg-black text-white p-4">
+                    <header className="text-[rgb(229,9,20)] text-2xl font-bold mb-4">
                         <Link href="/">ONEBITE CINEMA</Link>
                     </header>
                     <main>{children}</main>

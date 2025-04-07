@@ -1,18 +1,21 @@
-"use client";
-
-import movies from "@/dummy.json";
 import MovieItem from "../components/MovieItem";
-import { useSearchParams } from "next/navigation";
+import { MovieData } from "@/types";
 
-export default function SearchPage() {
-    const searchTerm = useSearchParams().get("q");
-    const filteredMovies = movies.filter((movie) =>
-        movie.title.includes(searchTerm || "")
+export default async function SearchPage({
+    searchParams
+}: {
+    searchParams: Promise<{ q: string }>;
+}) {
+    const { q } = await searchParams;
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/movie/search?q=${q}`
     );
+    if (!response.ok) return <div>검색 결과를 불러오는데 실패했습니다.</div>;
+    const searchMovieResult: MovieData[] = await response.json();
     return (
         <div className="p-4 grid grid-cols-3 gap-2">
-            {filteredMovies.map((movie) => (
-                <MovieItem key={movie.id} {...movie} />
+            {searchMovieResult.map((result) => (
+                <MovieItem key={result.id} {...result} />
             ))}
         </div>
     );

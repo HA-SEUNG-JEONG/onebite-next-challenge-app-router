@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Searchbar from "./components/SearchBar";
 
 interface SearchLayoutProps {
@@ -7,7 +8,9 @@ interface SearchLayoutProps {
 export default function SearchLayout({ children }: SearchLayoutProps) {
     return (
         <div>
-            <Searchbar />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Searchbar />
+            </Suspense>
             <main>{children}</main>
         </div>
     );
