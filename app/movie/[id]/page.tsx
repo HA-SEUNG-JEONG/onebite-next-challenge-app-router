@@ -1,5 +1,27 @@
 import Image from "next/image";
 import { MovieData } from "@/types";
+import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/movies`,
+            { cache: "force-cache" }
+        );
+        if (!response.ok) {
+            throw new Error("Failed to fetch movies");
+        }
+        const movies: MovieData[] = await response.json();
+        const id = movies.map((movie) => ({
+            id: movie.id.toString()
+        }));
+        return id;
+    } catch (error) {
+        console.error("Error generating static params:", error);
+        return [];
+    }
+}
+
 export default async function MoviePage({
     params
 }: {
@@ -12,7 +34,11 @@ export default async function MoviePage({
             cache: "force-cache"
         }
     );
-    if (!response.ok) return <div>영화를 불러오는데 실패했습니다.</div>;
+    if (!response.ok) {
+        if (response.status === 404) {
+            notFound();
+        }
+    }
     const movieDetail: MovieData = await response.json();
 
     const {
