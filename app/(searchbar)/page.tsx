@@ -18,9 +18,12 @@ async function getAllMovies() {
 }
 
 async function getRecommendedMovies() {
-    const response = await fetch("http://localhost:12345/movie/random", {
-        next: { revalidate: 2 }
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/movie/random`,
+        {
+            next: { revalidate: 2 }
+        }
+    );
     if (!response.ok) return <div>추천 영화를 불러오는데 실패했습니다.</div>;
     const recommendedMovies: MovieData[] = await response.json();
     return (
