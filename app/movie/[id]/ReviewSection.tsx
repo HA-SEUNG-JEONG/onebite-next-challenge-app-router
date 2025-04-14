@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createReview } from "./actions";
 
 interface Review {
     id: number;
@@ -36,27 +37,25 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
 
     useEffect(() => {
         fetchReviews();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [movieId]);
 
     const handleCreateReview = async () => {
+        if (!content.trim() || !author.trim()) return;
+
         setIsLoading(true);
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    content,
-                    author,
-                    movieId
-                })
-            });
+            const result = await createReview(
+                movieId,
+                content.trim(),
+                author.trim()
+            );
 
-            setContent("");
-            setAuthor("");
-            fetchReviews();
+            if (result.success) {
+                setContent("");
+                setAuthor("");
+            } else {
+                alert(result.error || "리뷰 작성에 실패했습니다.");
+            }
         } catch (error) {
             console.error("리뷰 작성 중 오류가 발생했습니다:", error);
             alert("리뷰 작성 중 오류가 발생했습니다.");
