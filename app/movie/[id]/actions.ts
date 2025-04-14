@@ -1,11 +1,15 @@
 "use server";
 
-export async function createReview(
-    movieId: string,
-    content: string,
-    author: string
-) {
+export async function createReview(formData: FormData) {
     try {
+        const movieId = formData.get("movieId");
+        const content = formData.get("content");
+        const author = formData.get("author");
+
+        if (!movieId || !content || !author) {
+            return { success: false, error: "모든 필드를 입력해주세요." };
+        }
+
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/review`,
             {
