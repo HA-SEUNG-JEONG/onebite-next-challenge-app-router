@@ -52,21 +52,11 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
         fetchReviews();
     }, [movieId]);
 
-    async function handleCreateReview(formData: FormData) {
-        const result = await createReview(formData);
-
-        if (result.success) {
-            formRef.current?.reset();
-        } else {
-            alert(result.error || "리뷰 작성에 실패했습니다.");
-        }
-    }
-
     return (
         <div className="max-w-5xl mx-auto p-4 md:p-8">
             <h3 className="text-xl font-bold mb-4">댓글</h3>
             <div className="bg-gray-900 rounded-lg p-4">
-                <form ref={formRef} action={handleCreateReview}>
+                <form action={createReview}>
                     <input type="hidden" name="movieId" value={movieId} />
                     <div className="mb-4">
                         <input

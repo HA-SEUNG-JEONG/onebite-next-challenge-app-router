@@ -7,7 +7,7 @@ export async function createReview(formData: FormData) {
         const author = formData.get("author");
 
         if (!movieId || !content || !author) {
-            return { success: false, error: "모든 필드를 입력해주세요." };
+            throw new Error("모든 필드를 입력해주세요.");
         }
 
         const response = await fetch(
@@ -28,10 +28,9 @@ export async function createReview(formData: FormData) {
         if (!response.ok) {
             throw new Error("리뷰 작성에 실패했습니다.");
         }
-
-        return { success: true };
     } catch (error) {
-        console.error("리뷰 작성 중 오류가 발생했습니다:", error);
-        return { success: false, error: "리뷰 작성에 실패했습니다." };
+        throw new Error(
+            error instanceof Error ? error.message : "리뷰 작성에 실패했습니다."
+        );
     }
 }
