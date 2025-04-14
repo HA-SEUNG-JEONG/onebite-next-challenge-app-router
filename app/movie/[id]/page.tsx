@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { MovieData } from "@/types";
 import { notFound } from "next/navigation";
+import ReviewSection from "./ReviewSection";
 
 export async function generateStaticParams() {
     try {
@@ -101,6 +102,8 @@ export default async function MoviePage({
                     {description}
                 </p>
             </div>
+
+            <ReviewSection movieId={id} />
         </div>
     );
 }
