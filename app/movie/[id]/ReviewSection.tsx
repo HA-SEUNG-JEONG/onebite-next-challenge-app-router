@@ -48,6 +48,12 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
         }
     };
 
+    const handleCreateReview = async (formData: FormData) => {
+        await createReview(formData);
+        formRef.current?.reset();
+        await fetchReviews();
+    };
+
     useEffect(() => {
         fetchReviews();
     }, [movieId]);
@@ -56,7 +62,7 @@ export default function ReviewSection({ movieId }: ReviewSectionProps) {
         <div className="max-w-5xl mx-auto p-4 md:p-8">
             <h3 className="text-xl font-bold mb-4">댓글</h3>
             <div className="bg-gray-900 rounded-lg p-4">
-                <form action={createReview}>
+                <form ref={formRef} action={handleCreateReview}>
                     <input type="hidden" name="movieId" value={movieId} />
                     <div className="mb-4">
                         <input
