@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { KeyboardEvent, MouseEvent, ReactNode, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 
@@ -16,22 +16,29 @@ const Modal = ({ children }: { children: ReactNode }) => {
             });
         }
     }, []);
+
+    const onModalClose = () => {
+        router.back();
+    };
+
+    const onModalEscape = (e: KeyboardEvent<HTMLDialogElement>) => {
+        if (e.key === "Escape") {
+            onModalClose();
+        }
+    };
+
+    const onClickModal = (e: MouseEvent<HTMLDialogElement>) => {
+        if ((e.target as HTMLElement).nodeName === "DIALOG") {
+            onModalClose();
+        }
+    };
+
     return createPortal(
         <dialog
             className="w-full max-w-2xl  mx-auto p-6 rounded-lg shadow-xl bg-white dark:bg-gray-800 backdrop:bg-black/50 backdrop:backdrop-blur-sm"
-            onClick={(e) => {
-                if ((e.target as HTMLElement).nodeName === "DIALOG") {
-                    router.back();
-                }
-            }}
-            onClose={() => {
-                router.back();
-            }}
-            onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                    router.back();
-                }
-            }}
+            onClick={onClickModal}
+            onClose={onModalClose}
+            onKeyDown={onModalEscape}
             ref={dialogRef}
         >
             {children}
